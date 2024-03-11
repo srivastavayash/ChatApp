@@ -3,7 +3,6 @@ import { AuthContext } from '../../context/AuthContext'
 import { ChatContext } from '../../context/ChatContext';
 
 function Message({message}) {
-
   const {currentUser}=useContext(AuthContext);
   const {data}=useContext(ChatContext);
 
@@ -21,7 +20,7 @@ function Message({message}) {
               ? currentUser.photoURL
               : data.user.photoURL
           } alt="" />
-         <span>Just now</span>
+         <span></span>
         </div>
         <div className="messageContent">
         <p>{message.text}</p>

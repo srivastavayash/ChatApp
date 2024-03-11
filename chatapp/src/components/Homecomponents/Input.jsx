@@ -16,9 +16,10 @@ function Input() {
 
   const { currentUser } = useContext(AuthContext);
   const { data } = useContext(ChatContext);
+  const imageUUID = uuid();
   const handleSend = async () => {
     if (image) {
-      const storageRef = ref(storage, uuid);
+      const storageRef = ref(storage, imageUUID);
       const uploadTask = uploadBytesResumable(storageRef, image);
 
       uploadTask.on(
