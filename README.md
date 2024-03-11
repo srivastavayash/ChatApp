@@ -1,9 +1,10 @@
 # Chat App
 
 This is a simple chat application built using React.js and Firebase. It allows users to chat in real-time using both Firestore and Realtime Database.
+![image](https://github.com/srivastavayash/ChatApp/assets/85108490/73f91388-b817-4c51-94fc-2928c9ff717e)
+![image](https://github.com/srivastavayash/ChatApp/assets/85108490/0db9ce84-f51d-4d4f-8c67-0ec809a8bfa0)
 
-![alt text](image.png)
-![alt text](image-1.png)
+
 ## Features
 
 - Real-time messaging
