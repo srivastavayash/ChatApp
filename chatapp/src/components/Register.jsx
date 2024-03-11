@@ -61,7 +61,7 @@ function Register() {
           <input style={{ display: "none" }} type="file" name="file" id="file" accept="image/*" required />
           <label htmlFor="file">
             <img src={add} alt="Add Avatar" />
-            <span>Add an Avatar</span>
+            <span>Add an Avatar <span style={{color:"red", fontSize:"8px"}}>(required)</span></span>
           </label>
           <button type="submit" disabled={loading}>Sign Up</button>
           {loading && <span>Uploading...</span>}
