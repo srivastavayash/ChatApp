@@ -1,38 +1,45 @@
-import React from 'react'
+import { doc, onSnapshot } from 'firebase/firestore';
+import React, { useContext, useEffect, useState } from 'react'
+import { db } from '../../firebase';
+import { AuthContext } from '../../context/AuthContext';
+import { ChatContext } from '../../context/ChatContext';
 
 function Chats() {
-  return (
-    <div className='chats'>
-         <div className="userChat">
-            <img src="https://images.unsplash.com/photo-1524638431109-93d95c968f03?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bGFkeXxlbnwwfHwwfHx8MA%3D%3D" alt="" />
-            <div className="userChatInfo">
-                <span>Jane</span>
-                <p>hello</p>
+    const [chats, setChats] = useState([]);
+    const { currentUser } = useContext(AuthContext);
+    const{dispatch}=useContext(ChatContext);
+
+    useEffect(() => {
+        const getChats = () => {
+            const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+                setChats(doc.data());
+            });
+            return () => {
+                unsub();
+            };
+        };
+        currentUser.uid && getChats();
+    }, [currentUser.uid]);
+
+   const handleSelect=(u)=>{
+     dispatch({type:"CHANGE_USER",payload:u});
+   };
+
+
+    return (
+        <div className='chats'>
+            {Object.entries(chats)?.sort((a,b)=>b[1].date -a[1].date).map((chat)=>(
+            <div className="userChat" key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
+                <img src={chat[1].userInfo.photoURL} alt="" />
+
+                <div className="userChatInfo">
+                    <span>{chat[1].userInfo.displayName}</span>
+                    <p>{chat[1].lastMessage?.text}</p>
+                </div>
             </div>
+            ))}
         </div>
-        <div className="userChat">
-            <img src="https://images.unsplash.com/photo-1479936343636-73cdc5aae0c3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGxhZHl8ZW58MHx8MHx8fDA%3D" alt="" />
-            <div className="userChatInfo">
-                <span>Jasmine</span>
-                <p>call me</p>
-            </div>
-        </div>
-        <div className="userChat">
-            <img src="https://images.unsplash.com/photo-1545912452-8aea7e25a3d3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGxhZHl8ZW58MHx8MHx8fDA%3D" alt="" />
-            <div className="userChatInfo">
-                <span>Janeta</span>
-                <p>i love u</p>
-            </div>
-        </div>
-        <div className="userChat">
-            <img src="https://images.unsplash.com/photo-1530423470967-45b90dca3a4f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGxhZHl8ZW58MHx8MHx8fDA%3D" alt="" />
-            <div className="userChatInfo">
-                <span>Perry</span>
-                <p>be my friend</p>
-            </div>
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Chats
